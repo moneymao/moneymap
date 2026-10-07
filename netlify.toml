@@ -1,0 +1,29 @@
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# SPA reload routing - redirects all client routes to /index.html with status 200
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security and cache headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Cache service worker and manifest fresh
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

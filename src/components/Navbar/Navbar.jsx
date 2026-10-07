@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Menu, X } from "lucide-react";
+import { Download, Menu, X } from "lucide-react";
+import usePwaInstall from "../../hooks/usePwaInstall";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isInstallable, installApp } = usePwaInstall();
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
 
@@ -71,6 +73,17 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
+
+          {isInstallable && (
+            <button
+              type="button"
+              onClick={installApp}
+              className="flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900"
+            >
+              <Download size={14} />
+              Install App
+            </button>
+          )}
 
           {isAuthenticated && user ? (
             <div className="flex items-center gap-4">
@@ -175,6 +188,20 @@ const Navbar = () => {
                   Get Started
                 </Link>
               </>
+            )}
+
+            {isInstallable && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  installApp();
+                }}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+              >
+                <Download size={16} />
+                Install MoneyMap App
+              </button>
             )}
           </div>
         </div>

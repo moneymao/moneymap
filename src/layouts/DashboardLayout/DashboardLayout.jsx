@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   BarChart3,
   ChevronDown,
+  Download,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -16,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { logoutUser } from "../../store/slices/authSlice";
+import usePwaInstall from "../../hooks/usePwaInstall";
 
 const navigationItems = [
   {
@@ -51,6 +53,7 @@ const DashboardLayout = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.user);
+  const { isInstallable, installApp } = usePwaInstall();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] =
     useState(false);
@@ -149,6 +152,19 @@ const DashboardLayout = () => {
             );
           })}
         </nav>
+
+        {isInstallable && (
+          <div className="px-3 pb-2">
+            <button
+              type="button"
+              onClick={installApp}
+              className="flex w-full items-center gap-2.5 rounded-lg border border-blue-200 bg-blue-50/70 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:bg-blue-100"
+            >
+              <Download size={15} />
+              <span>Install MoneyMap App</span>
+            </button>
+          </div>
+        )}
 
         {/* User section */}
         <div className="border-t border-slate-200 p-3">
@@ -249,6 +265,20 @@ const DashboardLayout = () => {
                   </button>
                 );
               })}
+
+              {isInstallable && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    installApp();
+                  }}
+                  className="flex w-full items-center gap-3 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2.5 text-sm font-semibold text-blue-700 transition hover:bg-blue-100"
+                >
+                  <Download size={18} />
+                  <span>Install MoneyMap App</span>
+                </button>
+              )}
 
               <div className="my-2 border-t border-slate-100" />
 
