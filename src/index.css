@@ -2,19 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Suppress Netlify Injected Badge & Collaborative Feedback Drawer */
+/* Suppress Netlify Injected Badge, Toolbar & Collaborative Feedback Drawer */
 #netlify-badge,
 .netlify-badge,
+.netlify-badge-container,
 .netlify-drawer-root,
+netlify-drawer,
 iframe[data-netlify-deploy-id],
 [data-netlify-deploy-id],
+iframe[src*="netlify"],
+iframe[title*="Netlify"],
 div[class*="netlify-drawer"],
-div[class*="NetlifyBadge"] {
+div[class*="NetlifyBadge"],
+div[class*="netlify-badge"],
+div[id*="netlify-badge"],
+a[class*="netlify-badge"],
+a[href*="netlify.com"][class*="badge"],
+button[class*="netlify"],
+[data-netlify-badge] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
   max-height: 0 !important;
   max-width: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
   overflow: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+  bottom: -9999px !important;
+  z-index: -9999 !important;
 }
