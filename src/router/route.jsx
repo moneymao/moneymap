@@ -10,6 +10,7 @@ import HowItWorks from "../pages/HowItWorks/HowItWorks";
 import Features from "../pages/Features/Features";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import VerifyEmail from "../pages/VerifyEmail/VerifyEmail";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Transactions from "../pages/Transactions/Transactions";
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register />,
+            },
+            {
+                path: "/forgot-password",
+                element: <ForgotPassword />,
             },
             {
                 path: "/verify-email",

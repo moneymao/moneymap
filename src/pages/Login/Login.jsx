@@ -37,6 +37,7 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
@@ -132,12 +133,22 @@ const Login = () => {
             />
 
             <div>
-              <label
-                htmlFor="password"
-                className="mb-2 block text-sm font-medium text-slate-700"
-              >
-                Password
-              </label>
+              <div className="mb-2 flex items-center justify-between">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-slate-700"
+                >
+                  Password
+                </label>
+
+                <Link
+                  to="/forgot-password"
+                  state={{ email: watch("email") }}
+                  className="text-xs font-semibold text-blue-600 transition hover:text-blue-700 hover:underline"
+                >
+                  Forgot password?
+                </Link>
+              </div>
 
               <div className="relative">
                 <LockKeyhole

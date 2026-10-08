@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   signOut,
   sendEmailVerification,
+  sendPasswordResetEmail,
   updateProfile,
   reload,
   onAuthStateChanged,
@@ -213,6 +214,13 @@ export const AuthProvider = ({ children }) => {
     dispatch(resetAuthState());
   };
 
+  /**
+   * Send password reset email for given email address.
+   */
+  const resetPassword = async (email) => {
+    return await sendPasswordResetEmail(auth, email.trim());
+  };
+
   const isEmailVerified = Boolean(currentUser?.emailVerified);
   const isAuthenticated = Boolean(currentUser);
 
@@ -227,6 +235,7 @@ export const AuthProvider = ({ children }) => {
     loginWithGoogle,
     resendVerificationEmail,
     refreshUser,
+    resetPassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
