@@ -225,7 +225,6 @@ const getDashboardSummary = async (req, res, next) => {
       })),
 
       recentTransactions,
-
       monthlySpending: monthlySpendingData,
     });
   } catch (error) {
