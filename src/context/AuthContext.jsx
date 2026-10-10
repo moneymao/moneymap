@@ -36,45 +36,59 @@ export const AuthProvider = ({ children }) => {
           );
           const isVerified = Boolean(firebaseUser.emailVerified || isGoogleUser);
 
-          let backendUserData = null;
-          // If verified or Google user, sync with backend
-          if (isVerified) {
-            try {
-              await firebaseUser.getIdToken(true);
-              const syncRes = await authService.syncUser();
-              backendUserData = syncRes.user;
-            } catch (syncErr) {
-              console.warn("Backend user sync warning:", syncErr.message);
-            }
-          }
-
-          const combinedUser = {
-            id: backendUserData?.id || firebaseUser.uid,
+          // Immediately establish authenticated state from Firebase credentials
+          const initialUser = {
+            id: firebaseUser.uid,
             firebaseUid: firebaseUser.uid,
-            name: firebaseUser.displayName || backendUserData?.name || "MoneyMap User",
+            name: firebaseUser.displayName || "MoneyMap User",
             email: firebaseUser.email || "",
             photoURL: firebaseUser.photoURL || "",
             provider: isGoogleUser ? "google" : "password",
             emailVerified: isVerified,
           };
 
-          setCurrentUser(combinedUser);
+          setCurrentUser(initialUser);
           dispatch(
             setFirebaseAuthState({
-              user: combinedUser,
+              user: initialUser,
               isAuthenticated: true,
               isEmailVerified: isVerified,
             })
           );
+          setLoading(false);
+
+          // Asynchronously sync with backend in the background without blocking UI
+          if (isVerified) {
+            try {
+              const syncRes = await authService.syncUser();
+              if (syncRes?.user) {
+                const combinedUser = {
+                  ...initialUser,
+                  id: syncRes.user.id || initialUser.id,
+                  name: syncRes.user.name || initialUser.name,
+                };
+                setCurrentUser(combinedUser);
+                dispatch(
+                  setFirebaseAuthState({
+                    user: combinedUser,
+                    isAuthenticated: true,
+                    isEmailVerified: isVerified,
+                  })
+                );
+              }
+            } catch (syncErr) {
+              console.warn("Backend user sync warning:", syncErr.message);
+            }
+          }
         } catch (error) {
           console.error("Auth state processing error:", error);
+          setLoading(false);
         }
       } else {
         setCurrentUser(null);
         dispatch(resetAuthState());
+        setLoading(false);
       }
-
-      setLoading(false);
     });
 
     return () => unsubscribe();

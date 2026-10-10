@@ -6,7 +6,7 @@ import { fetchDashboardSummary } from "../../store/slices/dashboardSlice";
 
 const Hero = () => {
   const dispatch = useDispatch();
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, isInitialized } = useSelector((state) => state.auth);
   const { summary, spendingByCategory } = useSelector(
     (state) => state.dashboard
   );
@@ -60,13 +60,13 @@ const Hero = () => {
 
           {/* Actions */}
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            {isAuthenticated && user ? (
+            {isInitialized && isAuthenticated && user ? (
               <>
                 <Link
                   to="/dashboard"
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2"
                 >
-                  Start tracking
+                  Go to Dashboard
                   <ArrowRight size={17} />
                 </Link>
 
@@ -77,7 +77,7 @@ const Hero = () => {
                   {user.name}
                 </Link>
               </>
-            ) : (
+            ) : isInitialized ? (
               <>
                 <Link
                   to="/register"
@@ -94,6 +94,8 @@ const Hero = () => {
                   Sign in
                 </Link>
               </>
+            ) : (
+              <div className="h-11 w-48 animate-pulse rounded-lg bg-slate-100" />
             )}
           </div>
 

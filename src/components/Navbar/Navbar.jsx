@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isInstallable, installApp } = usePwaInstall();
 
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  const { user, isAuthenticated, isInitialized } = useSelector((state) => state.auth);
 
   const getInitials = (name) => {
     if (!name || typeof name !== "string") {
@@ -85,7 +85,7 @@ const Navbar = () => {
             </button>
           )}
 
-          {isAuthenticated && user ? (
+          {isInitialized && isAuthenticated && user ? (
             <div className="flex items-center gap-4">
               <Link
                 to="/dashboard"
@@ -103,7 +103,7 @@ const Navbar = () => {
                 {getInitials(user.name)}
               </Link>
             </div>
-          ) : (
+          ) : isInitialized ? (
             <>
               <Link
                 to="/login"
@@ -119,6 +119,8 @@ const Navbar = () => {
                 Get Started
               </Link>
             </>
+          ) : (
+            <div className="h-9 w-28 animate-pulse rounded-lg bg-slate-100" />
           )}
         </div>
 
@@ -149,7 +151,7 @@ const Navbar = () => {
               </Link>
             ))}
 
-            {isAuthenticated && user ? (
+            {isInitialized && isAuthenticated && user ? (
               <>
                 <Link
                   to="/dashboard"
@@ -170,7 +172,7 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               </>
-            ) : (
+            ) : isInitialized ? (
               <>
                 <Link
                   to="/login"
@@ -188,7 +190,7 @@ const Navbar = () => {
                   Get Started
                 </Link>
               </>
-            )}
+            ) : null}
 
             {isInstallable && (
               <button

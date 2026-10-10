@@ -29,7 +29,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { login: loginWithFirebase, isAuthenticated, isEmailVerified } = useAuth();
+  const { login: loginWithFirebase, isAuthenticated, isEmailVerified, loading } = useAuth();
 
   const verifiedEmail = location.state?.verifiedEmail;
   const initialEmail = location.state?.email || verifiedEmail || "";
@@ -49,12 +49,24 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (isAuthenticated && isEmailVerified) {
+    if (!loading && isAuthenticated && isEmailVerified) {
       navigate("/dashboard", {
         replace: true,
       });
     }
-  }, [isAuthenticated, isEmailVerified, navigate]);
+  }, [loading, isAuthenticated, isEmailVerified, navigate]);
+
+  if (loading || (isAuthenticated && isEmailVerified)) {
+    return (
+      <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-slate-50">
+        <div
+          role="status"
+          aria-label="Loading"
+          className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-slate-900"
+        />
+      </div>
+    );
+  }
 
   const handleLogin = async (data) => {
     try {

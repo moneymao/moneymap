@@ -2,7 +2,7 @@
   "short_name": "MoneyMap",
   "name": "MoneyMap - Personal Finance & Budget Tracker",
   "description": "Smart Personal Finance & Budget Tracker to manage expenses, income, budgets, and savings goals.",
-  "start_url": "/",
+  "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
   "background_color": "#0f172a",
